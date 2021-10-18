@@ -9,12 +9,6 @@ Docker template
 - [Docker + Python + Flask で API サーバーを構築してみる](http://unalus.com/wp/2019/11/22/docker-python-flask%E3%81%A7api%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%82%92%E6%A7%8B%E7%AF%89%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B/)
 - [Flask に SPA バックエンドを全て任せたい話 - Qiita](https://qiita.com/ytkj/items/ab67a1cee3cbfc42254d)
 
-## TODO
-
-- **pending** calender.get_schedule() で calendar_xxxx.json のファイルがない場合の挙動 (API 対応)
-  - get_schedule() の戻りを empty dict にする
-  - API で xxxx 別に取得するようにし、該当がない場合はエラーをレスポンスする
-
 ---
 
 ## pip install
