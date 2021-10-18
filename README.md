@@ -48,6 +48,12 @@ hupper -m serve_waitress.py
 python serve_waitress.py
 ```
 
+## port
+
+- 8083:80   web http
+- 8084:8080 npm run serve
+- 8500:5000 flask-debug
+
 ## (hint) Python 3.9 + mod_wsgi のとき import エラー
 
 `import numpy` が失敗する。エラーメッセージ内にあるように Python の version が 3.9 ではなく 3.7 になってしまっている。
