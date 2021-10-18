@@ -27,17 +27,6 @@ cd src
 npm install
 ```
 
-## auth database 初期化
-
-```bash
-pipenv run python
-```
-
-```python
-from app import db, create_app
-db.create_all(app=create_app())
-```
-
 ## waitress serve
 
 ```bash
