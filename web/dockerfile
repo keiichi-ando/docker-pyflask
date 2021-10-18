@@ -1,0 +1,32 @@
+FROM python:3.9
+
+ARG USER_NAME="www-data"
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    && apt-get install -y sudo unzip git nodejs openjdk-11-jdk \
+    && apt-get install -y npm \
+    # clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y
+
+# volume owner
+RUN echo -e "\e[32m OWNER ${USER_GID}:${USER_GID} ${USER_NAME} \e[m" \
+    && mkdir /home/${USER_NAME} \
+    && groupmod --gid ${USER_GID} ${USER_NAME} \
+    && usermod --uid ${USER_UID} --gid ${USER_GID} ${USER_NAME} --home /home/${USER_NAME} --shell /bin/bash \
+    && chown -R ${USER_UID}:${USER_GID} /home/${USER_NAME} \
+    && echo "${USER_NAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${USER_NAME} \
+    && chmod 0440 /etc/sudoers.d/${USER_NAME}
+
+RUN pip install --upgrade pip && \
+    pip install pipenv hupper
+
+RUN npm install -g n && n stable
+
+ENV PATH /home/${USER_NAME}/.local/bin:$PATH
+
+EXPOSE 80

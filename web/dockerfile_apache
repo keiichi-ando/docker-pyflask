@@ -1,0 +1,41 @@
+FROM python:3.9
+
+ARG USER_NAME="www-data"
+ARG USER_UID=1000
+ARG USER_GID=1000
+
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    && apt-get install -y sudo apache2 apache2-dev unzip git nodejs \
+    # clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y
+
+# volume owner
+RUN echo -e "\e[32m OWNER ${USER_GID}:${USER_GID} ${USER_NAME} \e[m" \
+    && groupmod --gid ${USER_GID} ${USER_NAME} \
+    && usermod --uid ${USER_UID} --gid ${USER_GID} ${USER_NAME} --home /home/${USER_NAME} --move-home --shell /bin/bash \
+    && chown -R ${USER_UID}:${USER_GID} /home/${USER_NAME} \
+    && echo "${USER_NAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${USER_NAME} \
+    && chmod 0440 /etc/sudoers.d/${USER_NAME}
+
+RUN pip install --upgrade pip && \
+    pip install pipenv hupper mod_wsgi
+
+COPY ./apache2/000-default.conf /etc/apache2/sites-available/000-default.org
+RUN mod_wsgi-express module-config > /etc/apache2/sites-available/000-default.conf \ 
+    && cat /etc/apache2/sites-available/000-default.org >> /etc/apache2/sites-available/000-default.conf
+RUN a2enmod headers \
+    && a2enmod rewrite \
+    && echo "ServerName localhost" | tee /etc/apache2/conf-available/fqdn.conf \
+    && a2enconf fqdn \
+    # forward request and error logs to docker log collector
+    && ln -sf /dev/stdout /var/log/apache2/access.log \
+    && ln -sf /dev/stderr /var/log/apache2/error.log
+
+# -- npm --
+# RUN curl -L https://www.npmjs.com/install.sh | bash
+
+EXPOSE 80 
+CMD ["apachectl", "-D", "FOREGROUND"]

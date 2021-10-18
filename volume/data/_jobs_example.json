@@ -1,0 +1,44 @@
+{
+  "jobs": [
+    {
+      "id": "update_chibasite",
+      "trigger": "cron",
+      "func": "fetch_json",
+      "args": ["chibasite"],
+      "hour": "08",
+      "minute": "26"
+    },
+    {
+      "id": "update_rsite",
+      "trigger": "cron",
+      "func": "fetch_json",
+      "args": ["rsite"],
+      "hour": "08",
+      "minute": "26"
+    },
+    {
+      "id": "service_enable_chibasite",
+      "trigger": "cron",
+      "func": "service_enable",
+      "args": ["chibasite", "up"],
+      "hour": "08",
+      "minute": "12"
+    },
+    {
+      "id": "service_disable_chibasite",
+      "trigger": "cron",
+      "func": "service_enable",
+      "args": ["chibasite", "down"],
+      "hour": "19",
+      "minute": "31"
+    },
+    {
+      "id": "remote_poweron_rsite",
+      "trigger": "cron",
+      "func": "service_enable",
+      "args": ["rsite", "poweron"],
+      "hour": "08",
+      "minute": "01"
+    }
+  ]
+}

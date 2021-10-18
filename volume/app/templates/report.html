@@ -1,0 +1,28 @@
+{% extends "layouts/report.html" %}
+
+{% block content %}
+  <h1>Report</h1>
+  <h2>Iris.csv</h2>
+  <table>
+    <thead>
+      <tr>
+        {% for i in header : %}
+          <th scope="col">{{ i }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in record : %}
+        <tr>
+          {% for j in i : %}
+            <td>{{ j }}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h2>matpotlib</h2>
+  <div>
+    <img src="/graph" alt="my graph" style="width:90vw; border:solid 1px gray; margin:5vw;">
+  </div>
+{% endblock %}

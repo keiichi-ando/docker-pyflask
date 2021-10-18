@@ -1,0 +1,12 @@
+{% extends "layouts/items/base.html" %}
+
+{% block container %}
+<section class="hero is-primary is-fullheight">
+    {% include "layouts/items/header.html" %}
+    <div class="hero-body">
+    <div class="container has-text-centered">
+        {% block content %}{% endblock %}
+    </div>
+    </div>
+</section>
+{% endblock %}

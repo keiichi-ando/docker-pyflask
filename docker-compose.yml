@@ -1,0 +1,26 @@
+version: '3.1'
+
+services: 
+  web:
+    container_name: py-flask
+    build: 
+      context: ./web
+      args:
+        USER_NAME: www-data
+        USER_UID: 1000
+        USER_GID: 1000
+    ports:
+      - 8083:80
+      - 8084:8080
+      - 8500:5000
+    command: hupper -m waitress_serve.py
+    tty: true
+    environment:
+      TZ: Asia/Tokyo
+      PIPENV_VENV_IN_PROJECT: 1
+      PIPENV_IGNORE_VIRTUALENVS: 1
+    volumes: 
+      - ~/.ssh:/home/www-data/.ssh:ro
+      - ./volume:/var/www
+    working_dir: /var/www
+  
